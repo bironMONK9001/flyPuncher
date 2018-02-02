@@ -4,6 +4,7 @@ from pygame.locals import *
 #Initializations
 pygame.init()
 mainClock = pygame.time.Clock()
+basicFont = pygame.font.SysFont(None, 48)
 
 #Set up window
 WINDOWWIDTH = 640
@@ -15,6 +16,12 @@ pygame.display.set_caption('Fly Puncher')
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+
+#Win Message
+text = basicFont.render('Win!', True, WHITE, BLACK)
+textRect = text.get_rect()
+textRect.centerx = windowSurface.get_rect().centerx
+textRect.centery = windowSurface.get_rect().centery
 
 #Player Character
 player = pygame.Rect(300, 400, 50, 50)
@@ -80,14 +87,15 @@ while True:
 	if moveRight and player.right < WINDOWWIDTH:
 		player.right += MOVESPEED
 
+	#fill background
+	windowSurface.fill(WHITE)
+
 	#Kill fly
 	for fly in flys[:]:
 		if player.colliderect(fly):
 			if swatFly == True:
 				flys.remove(fly)
-
-	#fill background
-	windowSurface.fill(WHITE)
+				windowSurface.blit(text, textRect)
 
 	#Draw fly
 	for i in range(len(flys)):
